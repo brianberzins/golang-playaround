@@ -23,4 +23,4 @@ jobs:
           docker build -t golang-playaround:local .
           docker run --publish 8080:8080 --name local-test --detach golang-playaround:local
           echo "attempting to curl running docker container"
-          (curl -i -s http://localhost:8080/hello || grep "200" && echo "success") || echo "failed")
+          (curl -i -s http://localhost:8080/hello || grep "200" && echo "success") || echo "failed"
