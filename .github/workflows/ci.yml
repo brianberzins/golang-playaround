@@ -2,9 +2,8 @@ name: Build and Test
 
 on: [push, pull_request]
 jobs:
-  build-and-test:
+  go-build-and-test:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -15,16 +14,14 @@ jobs:
     - name: Test
       run: go test ./...
 
-  docker-build:
-    needs: build-and-test
+  docker-build-and-test:
+    needs: go-build-and-test
     runs-on: ubuntu-latest
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Container Run
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
         run: |
           docker build -t golang-playaround:local .
           docker run --publish 8080:8080 --name local-test --detach golang-playaround:local
-          curl -i -s http://localhost:8080/hello | grep "200" || (echo "failed to curl /hello" && exit 1)
+          echo "attempting to curl running docker container"
+          (curl -i -s http://localhost:8080/hello || grep "200" && echo "success") || echo "failed")
