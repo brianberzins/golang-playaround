@@ -6,15 +6,16 @@ import (
 	"net/http"
 )
 
-func greeting() string {
-	return "Hello"
+func greeting(responseWriter http.ResponseWriter, _ *http.Request) {
+	_, _ = fmt.Fprintf(responseWriter, "hello")
 }
 
-func hello(responseWriter http.ResponseWriter, _ *http.Request) {
-	_, _ = fmt.Fprintf(responseWriter, greeting())
+func goodbye(responseWriter http.ResponseWriter, _ *http.Request) {
+	_, _ = fmt.Fprintf(responseWriter, "goodbye")
 }
 
 func main() {
-	http.HandleFunc("/hello", hello)
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	http.HandleFunc("/hello", greeting)
+	http.HandleFunc("/goodbye", goodbye)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
