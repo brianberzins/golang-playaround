@@ -29,3 +29,7 @@ jobs:
         with:
           push: false
           tags: golang-playaround:local
+      - name: Container Run
+        run: | 
+          docker run --publish 8080:8080 --name local-test --detach golang-playaround:local
+          curl -i -s http://localhost:8080/hello | grep "200" || (echo "failed to curl /hello" && exit 1)
