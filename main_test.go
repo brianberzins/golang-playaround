@@ -7,12 +7,22 @@ import (
 	"testing"
 )
 
-func TestHello(t *testing.T) {
+func TestGetRequests(t *testing.T) {
+	tests := []struct {
+		endpoint     string
+		handler      func(responseWriter http.ResponseWriter, _ *http.Request)
+		expectedCode int
+		expectedBody string
+	}{
+		{endpoint: "/hello", handler: greeting, expectedCode: http.StatusOK, expectedBody: "hello"},
+		{endpoint: "/goodbye", handler: goodbye, expectedCode: http.StatusOK, expectedBody: "goodbye"},
+	}
 
-	w := httptest.NewRecorder()
-	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
-	greeting(w, r)
-
-	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "hello", w.Body.String())
+	for _, tc := range tests {
+		w := httptest.NewRecorder()
+		r := httptest.NewRequest(http.MethodGet, tc.endpoint, nil)
+		tc.handler(w, r)
+		assert.Equal(t, tc.expectedCode, w.Code)
+		assert.Equal(t, tc.expectedBody, w.Body.String())
+	}
 }
