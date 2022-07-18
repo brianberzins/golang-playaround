@@ -3,7 +3,15 @@ name: Build and Test
 on: [push, pull_request]
 jobs:
   build-and-test:
-    runs-on: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ubuntu-latest
+    env:
+      GOOS: ${{ matrix.goos }}
+      GOARCH: ${{ matrix.goarch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        goos: [linux, windows, ios]
+        goarch: [amd64, arm64]
 
     steps:
     - name: Checkout
@@ -11,6 +19,6 @@ jobs:
     - name: Setup Go environment
       uses: actions/setup-go@v2.2.0
     - name: Build
-      run: go build -v ./...
+      run: go build ./...
     - name: Test
       run: go test ./...
