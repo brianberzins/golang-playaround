@@ -32,8 +32,7 @@ type incrementer struct {
 func increment(w http.ResponseWriter, r *http.Request) {
 	var i incrementer
 	json.NewDecoder(r.Body).Decode(&i)
-	x := i.Start + i.Increment
-	_, _ = fmt.Fprintf(w, strconv.Itoa(x))
+	_, _ = fmt.Fprintf(w, strconv.Itoa(i.Start+i.Increment))
 }
 
 func createRouter() *mux.Router {
