@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -22,11 +24,24 @@ func goodbye(w http.ResponseWriter, _ *http.Request) {
 	_, _ = fmt.Fprintf(w, "goodbye")
 }
 
+type incrementer struct {
+	Start     int `json:"start"`
+	Increment int `json:"increment"`
+}
+
+func increment(w http.ResponseWriter, r *http.Request) {
+	var i incrementer
+	json.NewDecoder(r.Body).Decode(&i)
+	x := i.Start + i.Increment
+	_, _ = fmt.Fprintf(w, strconv.Itoa(x))
+}
+
 func createRouter() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/hello/{name}", greeting)
 	r.HandleFunc("/hello", greeting)
 	r.HandleFunc("/goodbye", goodbye)
+	r.HandleFunc("/incrementer", increment)
 	return r
 }
 

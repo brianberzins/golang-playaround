@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -27,4 +29,14 @@ func TestGetRequests(t *testing.T) {
 		assert.Equal(t, tc.expectedCode, w.Code)
 		assert.Equal(t, tc.expectedBody, w.Body.String())
 	}
+}
+
+func TestPostRequest(t *testing.T) {
+	ro := createRouter()
+	w := httptest.NewRecorder()
+	b, _ := json.Marshal(incrementer{Start: 3, Increment: 2})
+	r := httptest.NewRequest(http.MethodPost, "/incrementer", bytes.NewReader(b))
+	ro.ServeHTTP(w, r)
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, "5", w.Body.String())
 }
