@@ -1,0 +1,8 @@
+mode: set
+github.com/brianberzins/golang-playaround/main.go:11.32,12.16 1 1
+github.com/brianberzins/golang-playaround/main.go:15.2,15.24 1 1
+github.com/brianberzins/golang-playaround/main.go:12.16,14.3 1 1
+github.com/brianberzins/golang-playaround/main.go:18.55,20.2 1 1
+github.com/brianberzins/golang-playaround/main.go:22.54,24.2 1 1
+github.com/brianberzins/golang-playaround/main.go:26.13,28.2 1 0
+github.com/brianberzins/golang-playaround/main.go:30.33,36.2 5 1
