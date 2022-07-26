@@ -1,4 +1,4 @@
-package main
+package golang_playaround
 
 import (
 	"log"
