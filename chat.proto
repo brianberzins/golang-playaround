@@ -1,8 +1,5 @@
-// from directory with chat.proto
-// protoc -I./ --go_out=./ ./chat.proto
 syntax = "proto3";
-option go_package = "./";
-package chat;
+option go_package = "./chat";
 
 message Message {
   string body = 1;
@@ -11,3 +8,6 @@ message Message {
 service ChatService {
   rpc SayHello(Message) returns (Message) {}
 }
+
+// from directory with chat.proto
+// protoc --go_out=. --go-grpc_out=. ./chat.proto
